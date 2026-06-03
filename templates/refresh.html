@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<meta http-equiv="Refresh" content="3;url=/"/>
+<title>提交成功</title>
+<style>
+  :root {
+    --primary: #6366f1;
+    --success: #10b981;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --radius: 16px;
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.05);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 40%, #f0fdf4 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 36px 28px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  .icon { font-size: 48px; margin-bottom: 12px; }
+  .card h1 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .card h2 { font-size: 14px; font-weight: 500; color: var(--warning); margin-bottom: 16px; }
+  .card p { font-size: 13px; color: var(--text-light); }
+  .card a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  .countdown {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">&#9989;</div>
+  <h1>你好，{{ name }}</h1>
+  <h2>请勿重复提交 Cookie</h2>
+  <p><span class="countdown">3</span> 秒后页面自动跳转</p>
+  <p style="margin-top:12px;">若未跳转，请点击 <a href="/">这里</a></p>
+</div>
+</body>
+</html>

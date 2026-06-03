@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<title>K歌自助更新CK</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --radius: 16px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.05);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 40%, #f0fdf4 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  /* Background decoration */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    right: -30%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -40%;
+    left: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .header .icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 28px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .header p {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+  }
+
+  /* Form */
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .form-group textarea {
+    width: 100%;
+    height: 140px;
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    color: var(--text);
+    background: #f8fafc;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    line-height: 1.5;
+  }
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    background: white;
+  }
+  .form-group textarea::placeholder {
+    color: #94a3b8;
+  }
+
+  /* Buttons */
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    flex: 1;
+    min-width: 90px;
+    padding: 11px 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    letter-spacing: 0.2px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.25);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+  }
+  .btn-outline {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--border);
+  }
+  .btn-outline:hover {
+    border-color: var(--primary);
+    background: #f8f8ff;
+  }
+  .btn-accent {
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: white;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.25);
+  }
+  .btn-accent:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(16,185,129,0.35);
+  }
+
+  /* Tabs */
+  .tabs {
+    margin-top: 20px;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .tab-nav {
+    display: flex;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-nav a {
+    flex: 1;
+    padding: 14px 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    transition: all 0.2s;
+    position: relative;
+  }
+  .tab-nav a:hover {
+    color: var(--text);
+    background: rgba(99,102,241,0.04);
+  }
+  .tab-nav a.active,
+  .tab-nav a:target {
+    color: var(--primary);
+  }
+  .tab-nav a.active::after,
+  .tab-nav a:target::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+  .tab-content {
+    padding: 20px 16px;
+  }
+  .tab-content .pane {
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+  .tab-content .pane:target {
+    display: block;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .tab-content h5 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .tab-content ol {
+    padding-left: 20px;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.8;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .tab-content ol li {
+    margin-bottom: 4px;
+  }
+  .tab-content ol a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .tab-content ol a:hover {
+    text-decoration: underline;
+  }
+  .video-link {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 6px 14px;
+    background: #fef3c7;
+    color: #b45309;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .video-link:hover {
+    background: #fde68a;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 11px;
+    color: var(--text-light);
+    opacity: 0.7;
+  }
+
+  /* Subtle pulse for submit button */
+  @keyframes subtlePulse {
+    0%, 100% { box-shadow: 0 2px 8px rgba(99,102,241,0.25); }
+    50% { box-shadow: 0 2px 16px rgba(99,102,241,0.45); }
+  }
+  .btn-primary {
+    animation: subtlePulse 3s ease-in-out infinite;
+  }
+
+  /* Custom scrollbar */
+  ol::-webkit-scrollbar {
+    width: 4px;
+  }
+  ol::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+  }
+</style>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  function select(){
+    var myselect = document.getElementById("sel");
+    var index = myselect.selectedIndex;
+    value = myselect.options[index].value;
+    v = value.replace(/'/g,'"');
+    var obj = JSON.parse(v);
+    var cookie = document.getElementById('cookie');
+    cookie.value = obj.cookie;
+    var openkey = document.getElementById('openkey');
+    openkey.value = obj.openkey;
+  }
+
+  var commitStatus = false;
+  function dosubmit(){
+    if(commitStatus == false){
+      commitStatus = true;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function onFocus(){
+    // Show first tab by default
+    if (location.hash === '') {
+      location.hash = '#android';
+    }
+  }
+
+  const getLocalIP = async () => {
+    try {
+      const res = await fetch('https://api64.ipify.org?format=json');
+      const data = await res.json();
+      document.getElementById('localIP').value = data.ip;
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+  getLocalIP();
+</script>
+</head>
+<body onload="onFocus()">
+
+<div class="container">
+  <div class="header">
+    <div class="icon">🎤</div>
+    <h1>K歌自助更新CK</h1>
+    <p>快速更新全民K歌 Cookie · 多端教程</p>
+  </div>
+
+  <div class="card">
+    <form action="/do" method="get" onsubmit="return dosubmit()">
+      <div class="form-group">
+        <label>Cookie 粘贴区</label>
+        <textarea id="cookie" name="cookie" placeholder="在此粘贴您的 Cookie..." oninput="value=value.replace(/[一-龥]/g,'')" required></textarea>
+      </div>
+      <input type="hidden" id="localIP" name="localIP">
+
+      <div class="btn-group">
+        <button type="submit" id="flower" class="btn btn-primary">&#9889; 更新 CK</button>
+        <button type="button" class="btn btn-outline" onclick="location.href='/login'">&#128247; 扫码登录</button>
+        <button type="button" class="btn btn-accent" onclick="location.href='/state'">&#128202; 登录状态</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="tabs">
+    <div class="tab-nav">
+      <a href="#android" id="andr">&#129464; 安卓</a>
+      <a href="#apple">&#127822; 苹果</a>
+      <a href="#pc">&#128187; 电脑</a>
+    </div>
+    <div class="tab-content">
+      <div class="pane" id="android">
+        <h5>手机 Cookie 获取方法（无需电脑，两个手机也行）</h5>
+        <ol>
+          <li>手机下载 <a href="https://www.alookweb.com/" target="_blank">Alook 浏览器</a></li>
+          <li>打开 <a href="https://kg.qq.com/index-pc.html" target="_blank">全民K歌官网</a></li>
+          <li>浏览器菜单 → 电脑版（请求桌面版网页方便扫码）</li>
+          <li>右上角登录 → 弹出二维码 → 截屏二维码到另一个设备</li>
+          <li>打开全民K歌 APP 扫码登录</li>
+          <li>登录成功后，浏览器菜单 → 工具箱 → 开发者工具 → Cookies → 拷贝</li>
+          <li>粘贴到上方输入框，点击"更新 CK"即可</li>
+        </ol>
+        <a class="video-link" href="/video?device=android" target="_blank">&#9654; 视频教程</a>
+      </div>
+
+      <div class="pane" id="apple">
+        <h5>苹果也可用安卓方法，以下为 Stream 抓包方案</h5>
+        <ol>
+          <li>下载 <a href="https://apps.apple.com/cn/app/stream/id1312141691" target="_blank">Stream 抓包软件</a></li>
+          <li>打开 Stream → 设置 → HTTPS 抓包 → 安装 CA 证书 → 允许</li>
+          <li>跳转到浏览器下载证书（需连 WiFi）</li>
+          <li>手机设置 → 通用 → 描述文件 → 安装证书</li>
+          <li>手机设置 → 通用 → 关于本机 → 证书信任设置 → 启用证书</li>
+          <li>返回 Stream → 设置 → HTTPS 抓包 → 确认 CA 证书已安装且信任</li>
+          <li>点击开始抓包 → 去全民K歌浏览"K歌账户" → 返回 Stream 停止抓包</li>
+          <li>抓包历史 → 第一条 session → 按域名找 node.kg.qq.com</li>
+          <li>任选一条记录 → 请求 → 请求头部 → 复制 Cookie</li>
+          <li>粘贴到上方输入框，点击"更新 CK"即可</li>
+        </ol>
+        <a class="video-link" href="/video?device=apple" target="_blank">&#9654; 视频教程</a>
+      </div>
+
+      <div class="pane" id="pc">
+        <h5>以 QQ 浏览器为例，其他浏览器大同小异</h5>
+        <ol>
+          <li>浏览器打开 <a href="https://kg.qq.com/index-pc.html" target="_blank">全民K歌官网</a></li>
+          <li>右上角登录 → 弹出二维码 → 打开全民K歌 APP 扫码登录</li>
+          <li>按 F12 进入控制台 → 按 F5 刷新网页</li>
+          <li>按 <a href="https://s1.yesimg.com/2023/05/05/cffe070d91f51.png" target="_blank">图片指引</a>依次进入 Network → Doc → index.html 或 index_pc.html</li>
+          <li>Headers → 找到 Cookie → 复制到上方输入框</li>
+          <li>点击"更新 CK"即可</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Cookie 数据仅用于维持登录状态</div>
+</div>
+
+</body>
+</html>
